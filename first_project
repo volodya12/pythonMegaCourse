@@ -1,0 +1,85 @@
+todo_list = []
+
+while True:
+    user_action = input("Type add or show or edit: ").strip()
+
+    match user_action:
+        case "add":
+            todo = input("Enter a Todo: ").strip() + '\n'
+
+            with open('myList.txt', 'r') as file:
+                todo_list = file.readlines()
+
+            todo_list.append(todo)
+
+            with open('myList.txt', 'w') as file:
+                file.writelines(todo_list)
+
+        case "show":
+            # print(todo_list)
+            with open('myList.txt', 'r') as file:
+                todo_list = file.readlines()
+
+            # shows as list (verticle)
+            for numbering, item in enumerate(todo_list):
+                item = item.strip('\n')
+                raw = f"{numbering + 1}.{item}"
+                print(raw)
+
+            with open('myList.txt', 'w') as file:
+                file.writelines(todo_list)
+
+        case "exit":
+            break
+        case "edit":
+            new_action = int(input("Enter todo # wish to edit: "))
+            new_action = new_action - 1
+
+            with open('myList.txt', 'r') as file:
+                file.readlines()
+            print(todo_list)
+
+            replace_with = input("Replace with: ")
+            todo_list[new_action] = replace_with + '\n'
+            print(todo_list)
+
+            with open('myList.txt', 'w') as file:
+                file.writelines(todo_list)
+
+        case "finish" or "done":
+            new_action = int(input("Which task is completed? "))
+            new_action = new_action - 1
+
+            with open('myList.txt', 'r') as file:
+                todo_list = file.readlines()
+
+            index = new_action - 1
+            item_removed = todo_list[index]
+            todo_list.pop(new_action - 1)
+
+            with open('myList.txt', 'w') as file:
+                file.writelines(todo_list)
+            message = f"Item {item_removed} was removed from the List"
+        #'whatever' accepts any keyword
+        # alternatively, use '_'
+        # ex: case _:
+        case whatever:
+            print("entered wrong text")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
