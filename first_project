@@ -46,20 +46,21 @@ while True:
             with open('myList.txt', 'w') as file:
                 file.writelines(todo_list)
 
-        case "finish" or "done":
+        case "finish":
             new_action = int(input("Which task is completed? "))
             new_action = new_action - 1
 
             with open('myList.txt', 'r') as file:
                 todo_list = file.readlines()
 
-            index = new_action - 1
-            item_removed = todo_list[index]
-            todo_list.pop(new_action - 1)
+            index = new_action - 1            # Create index -identifies element inside the list
+            item_removed = todo_list[index]   # place index into variable
+            todo_list.pop(new_action - 1)     # Remove item from the list
 
             with open('myList.txt', 'w') as file:
                 file.writelines(todo_list)
             message = f"Item {item_removed} was removed from the List"
+
         #'whatever' accepts any keyword
         # alternatively, use '_'
         # ex: case _:
