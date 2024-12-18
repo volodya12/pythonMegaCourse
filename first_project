@@ -2,65 +2,70 @@ todo_list = []
 
 while True:
     user_action = input("Type add or show or edit: ").strip()
+    
+    if 'add' or 'new' in user_action:   # add multiple options into input
+        todo = user_action[4:]          # slices everything before 4: which is 'add'
 
-    match user_action:
-        case "add":
-            todo = input("Enter a Todo: ").strip() + '\n'
-
-            with open('myList.txt', 'r') as file:
-                todo_list = file.readlines()
+        with open('myList.txt', 'r') as file:
+            todo_list = file.readlines()
 
             todo_list.append(todo)
 
             with open('myList.txt', 'w') as file:
                 file.writelines(todo_list)
 
-        case "show":
+    elif 'show' or 'display' in user_action:
+        with open('myList.txt', 'r') as file:
+            todo_list = file.readlines()
             # print(todo_list)
-            with open('myList.txt', 'r') as file:
-                todo_list = file.readlines()
 
-            # shows as list (verticle)
-            for numbering, item in enumerate(todo_list):
-                item = item.strip('\n')
-                raw = f"{numbering + 1}.{item}"
-                print(raw)
+        # shows as list (verticle)
+        for numbering, item in enumerate(todo_list):
+            item = item.strip('\n')
+            raw = f"{numbering + 1}.{item}"
+            print(raw)
 
-            with open('myList.txt', 'w') as file:
+        with open('myList.txt', 'w') as file:
                 file.writelines(todo_list)
 
-        case "exit":
-            break
-        case "edit":
-            new_action = int(input("Enter todo # wish to edit: "))
-            new_action = new_action - 1
+    elif 'edit' in user_action:
+        new_action = int(user_action[5:])
+        print(new_action)
 
-            with open('myList.txt', 'r') as file:
-                file.readlines()
-            print(todo_list)
+        new_action = new_action - 1
+            
+        with open('myList.txt', 'r') as file:
+            file.readlines()
+        print(todo_list)
 
-            replace_with = input("Replace with: ")
-            todo_list[new_action] = replace_with + '\n'
-            print(todo_list)
+        replace_with = input("Replace with: ")
+        todo_list[new_action] = replace_with + '\n'
+        print(todo_list)
 
-            with open('myList.txt', 'w') as file:
-                file.writelines(todo_list)
+        with open('myList.txt', 'w') as file:
+            file.writelines(todo_list)
 
-        case "finish":
-            new_action = int(input("Which task is completed? "))
-            new_action = new_action - 1
+    elif 'finish' in user_action:
+        new_action = int(user_action[7:])
+        new_action = new_action - 1
 
-            with open('myList.txt', 'r') as file:
-                todo_list = file.readlines()
+        with open('myList.txt', 'r') as file:
+            todo_list = file.readlines()
 
-            index = new_action - 1            # Create index -identifies element inside the list
-            item_removed = todo_list[index]   # place index into variable
-            todo_list.pop(new_action - 1)     # Remove item from the list
+        index = new_action - 1            # Create index -identifies element inside the list
+        item_removed = todo_list[index]   # place index into variable
+        todo_list.pop(new_action - 1)     # Remove item from the list
 
-            with open('myList.txt', 'w') as file:
-                file.writelines(todo_list)
-            message = f"Item {item_removed} was removed from the List"
+        with open('myList.txt', 'w') as file:
+            file.writelines(todo_list)
+        message = f"Item {item_removed} was removed from the List"
 
+    elif 'exit' or 'done' in user_action:
+        break
+    else:
+        print("Command not found")
+
+print("Bye")
         #'whatever' accepts any keyword
         # alternatively, use '_'
         # ex: case _:
