@@ -1,86 +1,67 @@
-todo_list = []
+
+agenda = []
 
 while True:
-    user_action = input("What is on Agenda? Type add, show, edit, remove, or exit: ").strip().lower()
-    
-    if user_action.startswith('add'):   
-        todo = user_action[4:]          # slices everything before 4: which is 'add'
+    user_input = input("What is on agenda? Option: show, add, remove, edit, exit: ").strip().lower()
 
-        with open('myList.txt', 'r') as file:
-            todo_list = file.readlines()
+    if user_input.startswith(('add', 'new')):   # double () allows to pass two arguments
+        #new_item = input("What do you want to add? ")+'\n'
+        new_item = user_input[4:] + '\n'
 
-            todo_list.append(todo)
+        agenda.append(new_item)  # adds to the List
+        file = open(r"myList.txt", 'w') # declare file as 'write'
+        file.writelines(agenda)     # write list to file
+        file.close()
+    elif user_input.startswith('done'):
+        remove_item = input("Which item you want to remove? Type show - to show list: ")
+
+        if user_input.startswith('show'):
+            with open("myList.txt", 'r') as file:
+                todos = file.readlines()
+            # will read lines using 'for loop'
+            for index, item in enumerate(agenda):
+                item = item.strip('\n')
+                row = f"{index + 1}.{item}"
+                print(row)
+
+        remove_item = input("Which item you want to remove? Type show - to show list: ")
+        agenda.remove(remove_item) #removes item by name
+            #remove_element = agenda.pop(1) #removes by index
+        print("Removed element: ", remove_item)
+
+    elif user_input.startswith('show'):
+        with open("myList.txt", 'r') as file:    # declaring file as read
+            todos = file.readlines()
+
+        for index, item in enumerate(agenda):   # since file has read lines, now need to display in Console
+            item = item.strip('\n')
+            row = f"{index+1}.{item}"
+            print(row)
+
+    elif user_input.startswith('edit'):
+        try:
+            number = int(input("Number of the item you want replace? "))
+            number = number - 1
+
+            with open('myList.txt', 'r') as file:
+                agenda = file.readlines()
+
+            replaced_item = input("What do you want to replace with? ")+'\n'
+            agenda[number] = replaced_item
 
             with open('myList.txt', 'w') as file:
-                file.writelines(todo_list)
+                file.writelines(agenda)
+        except ValueError:
+            print("Command is not valid")
+            # will start program from this line (line 5), beginning of program
+            #user_input = input("What is on agenda? Option: show, add, remove, edit, exit: ").strip().lower()
+            # an alternative way (avoids code redundancy)- starts from beginning of program
+            continue
 
-    elif user_action.startswith('show'):
-        with open('myList.txt', 'r') as file:
-            todo_list = file.readlines()
-            # print(todo_list)
-
-        # shows as list (verticle)
-        for numbering, item in enumerate(todo_list):
-            item = item.strip('\n')
-            raw = f"{numbering + 1}.{item}"
-            print(raw)
-
-        with open('myList.txt', 'w') as file:
-                file.writelines(todo_list)
-
-    elif user_action.startswith('edit'):
-        new_action = int(user_action[5:])
-        print(new_action)
-
-        new_action = new_action - 1
-            
-        with open('myList.txt', 'r') as file:
-            file.readlines()
-        print(todo_list)
-
-        replace_with = input("Replace with: ")
-        todo_list[new_action] = replace_with + '\n'
-        print(todo_list)
-
-        with open('myList.txt', 'w') as file:
-            file.writelines(todo_list)
-
-    elif user_action.startswith('finish'):
-        new_action = int(user_action[7:])
-        new_action = new_action - 1
-
-        with open('myList.txt', 'r') as file:
-            todo_list = file.readlines()
-
-        index = new_action - 1            # Create index -identifies element inside the list
-        item_removed = todo_list[index]   # place index into variable
-        todo_list.pop(new_action - 1)     # Remove item from the list
-
-        with open('myList.txt', 'w') as file:
-            file.writelines(todo_list)
-        message = f"Item {item_removed} was removed from the List"
-
-    elif user_action.startswith('exit'):
+    elif user_input.startswith('exit'):
         break
     else:
-        print("Command not found")
-
-print("Bye")
-        #'whatever' accepts any keyword
-        # alternatively, use '_'
-        # ex: case _:
-        case whatever:
-            print("entered wrong text")
-
-
-
-
-
-
-
-
-
-
+        print("Command not valid")
 
 
 
